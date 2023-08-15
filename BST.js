@@ -1,4 +1,12 @@
+import { mergeSort } from "./mergeSort.js";
+
 let arrayToBalance = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+
+const removeDupes = (array) => {
+	return array.filter((value, index) => array.indexOf(value) === index);
+
+	// console.log(array);
+};
 
 const node = (value, left = null, right = null) => {
 	return { value, left, right };
@@ -10,7 +18,6 @@ const tree = (array) => {
 			return null;
 		}
 		let mid = Math.floor((start + end) / 2);
-		console.log(mid);
 		let root = node(array[mid]);
 
 		root.left = buildTree(array, start, mid - 1);
@@ -34,8 +41,8 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 		prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 	}
 };
-// console.log(tree(arrayToBalance));
-prettyPrint(tree(arrayToBalance));
+
+prettyPrint(tree(mergeSort(removeDupes(arrayToBalance))));
 //need treeNode factory function / class
 //has left / right node / value
 //left / right start as null
