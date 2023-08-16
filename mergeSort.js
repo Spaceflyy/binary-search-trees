@@ -32,7 +32,7 @@ const merge = (left, right) => {
 	return sortedArray;
 };
 
-const mergeSort = (array) => {
+export const mergeSort = (array) => {
 	const mid = Math.floor(array.length / 2);
 	let left = array.slice(0, mid);
 	let right = array.slice(mid);
@@ -43,5 +43,3 @@ const mergeSort = (array) => {
 	}
 	return merge(mergeSort(left), mergeSort(right));
 };
-
-export { merge, mergeSort };
