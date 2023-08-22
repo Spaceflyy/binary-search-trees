@@ -76,11 +76,9 @@ const tree = () => {
 		}
 
 		if (root.left === null) {
-			let temp = root.right;
-			return temp;
+			return (temp = root.right);
 		} else if (root.right === null) {
-			let temp = root.left;
-			return temp;
+			return (temp = root.left);
 		} else {
 			let succParent = root;
 			let succ = root.right;
@@ -89,7 +87,7 @@ const tree = () => {
 				succParent = succ;
 				succ = succ.left;
 			}
-			if (succParent != root) {
+			if (succParent !== root) {
 				succParent.left = succ.right;
 			} else {
 				succParent.right = succ.right;
@@ -99,8 +97,103 @@ const tree = () => {
 			return root;
 		}
 	};
+	const find = (value, root = rootNode) => {
+		if (root === null) {
+			return "Value not found in tree";
+		}
+		if (root.value === value) {
+			return root;
+		}
 
-	return { buildTree, insert, getTree, deleteNode };
+		if (value < root.value) {
+			return find(value, root.left);
+		} else if (value > root.value) {
+			return find(value, root.right);
+		}
+	};
+
+	const levelOrder = (root = rootNode) => {
+		if (root === null) {
+			return;
+		}
+
+		let queue = [];
+		let result = [];
+
+		queue.push(root);
+		while (queue.length > 0) {
+			let current = queue[0];
+			result.push(current.value);
+			if (current.left !== null) {
+				queue.push(current.left);
+			}
+			if (current.right !== null) {
+				queue.push(current.right);
+			}
+			queue.shift();
+		}
+		return result;
+	};
+
+	const inOrder = (root = rootNode, result = []) => {
+		if (root === null) {
+			return;
+		}
+
+		if (root.left !== null) {
+			inOrder(root.left, result);
+		}
+		result.push(root.value);
+
+		if (root.right !== null) {
+			inOrder(root.right, result);
+		}
+
+		return result;
+	};
+
+	const preOrder = (root = rootNode, result = []) => {
+		if (root === null) {
+			return;
+		}
+
+		result.push(root.value);
+		if (root.left !== null) {
+			preOrder(root.left, result);
+		}
+
+		if (root.right !== null) {
+			preOrder(root.right, result);
+		}
+
+		return result;
+	};
+
+	const postOrder = (root = rootNode, result = []) => {
+		if (root === null) {
+			return;
+		}
+
+		if (root.left !== null) {
+			postOrder(root.left, result);
+		}
+		if (root.right !== null) {
+			postOrder(root.right, result);
+		}
+		result.push(root.value);
+		return result;
+	};
+	return {
+		buildTree,
+		insert,
+		getTree,
+		deleteNode,
+		find,
+		levelOrder,
+		inOrder,
+		preOrder,
+		postOrder,
+	};
 };
 
 let newTree = tree();
@@ -109,9 +202,13 @@ newTree.buildTree(prepArray(arrayToBalance));
 newTree.insert(0);
 newTree.insert(200);
 newTree.insert(1000);
-
 prettyPrint(newTree.getTree());
 
+console.log(newTree.find(2));
+console.log(newTree.levelOrder());
+console.log(newTree.inOrder());
+console.log(newTree.preOrder());
+console.log(newTree.postOrder());
 //need treeNode factory function / class
 //has left / right node / value
 //left / right start as null
