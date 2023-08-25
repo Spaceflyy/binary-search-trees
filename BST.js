@@ -183,6 +183,24 @@ const tree = () => {
 		result.push(root.value);
 		return result;
 	};
+
+	const findHeight = (value, node = find(value)) => {
+		let rightHeight = 0;
+		let leftHeight = 0;
+		if (node === null || (node.left === null && node.right === null)) return 0;
+
+		if (node.left !== null) {
+			leftHeight = findHeight(node.left.value);
+		}
+		if (node.right !== null) {
+			rightHeight = findHeight(node.right.value);
+		}
+		if (leftHeight > rightHeight) {
+			return leftHeight + 1;
+		} else {
+			return rightHeight + 1;
+		}
+	};
 	return {
 		buildTree,
 		insert,
@@ -193,6 +211,7 @@ const tree = () => {
 		inOrder,
 		preOrder,
 		postOrder,
+		findHeight,
 	};
 };
 
@@ -209,6 +228,8 @@ console.log(newTree.levelOrder());
 console.log(newTree.inOrder());
 console.log(newTree.preOrder());
 console.log(newTree.postOrder());
+console.log(newTree.findHeight(6345));
+
 //need treeNode factory function / class
 //has left / right node / value
 //left / right start as null
