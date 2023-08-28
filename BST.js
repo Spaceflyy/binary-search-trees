@@ -184,16 +184,16 @@ const tree = () => {
 		return result;
 	};
 
-	const findHeight = (value, node = find(value)) => {
+	const findHeight = (node) => {
 		let rightHeight = 0;
 		let leftHeight = 0;
 		if (node === null || (node.left === null && node.right === null)) return 0;
 
 		if (node.left !== null) {
-			leftHeight = findHeight(node.left.value);
+			leftHeight = findHeight(node.left);
 		}
 		if (node.right !== null) {
-			rightHeight = findHeight(node.right.value);
+			rightHeight = findHeight(node.right);
 		}
 		if (leftHeight > rightHeight) {
 			return leftHeight + 1;
@@ -201,6 +201,50 @@ const tree = () => {
 			return rightHeight + 1;
 		}
 	};
+
+	const findDepth = (node, root = rootNode) => {
+		if (node === null) {
+			return 0;
+		}
+
+		let depth = 0;
+
+		if (node === root) {
+			return depth;
+		}
+
+		if (node.value < root.value) {
+			depth = findDepth(node, root.left);
+		}
+
+		if (node.value > root.value) {
+			depth = findDepth(node, root.right);
+		}
+
+		return depth + 1;
+	};
+
+	const isBalanced = (node = rootNode) => {
+		if (node === null) {
+			return;
+		}
+
+		let difference = Math.abs(findHeight(node.left) - findHeight(node.right));
+		if (node.left !== null) {
+			isBalanced(node.left);
+		}
+
+		if (node.right !== null) {
+			isBalanced(node.right);
+		}
+
+		if (difference > 1) {
+			return false;
+		} else {
+			return true;
+		}
+	};
+
 	return {
 		buildTree,
 		insert,
@@ -212,6 +256,8 @@ const tree = () => {
 		preOrder,
 		postOrder,
 		findHeight,
+		findDepth,
+		isBalanced,
 	};
 };
 
@@ -221,6 +267,8 @@ newTree.buildTree(prepArray(arrayToBalance));
 newTree.insert(0);
 newTree.insert(200);
 newTree.insert(1000);
+newTree.insert(2000);
+newTree.insert(3000);
 prettyPrint(newTree.getTree());
 
 console.log(newTree.find(2));
@@ -228,15 +276,6 @@ console.log(newTree.levelOrder());
 console.log(newTree.inOrder());
 console.log(newTree.preOrder());
 console.log(newTree.postOrder());
-console.log(newTree.findHeight(6345));
-
-//need treeNode factory function / class
-//has left / right node / value
-//left / right start as null
-
-// initialise start= 0 end = array length -1
-// set mid to (start+end) /2
-// create tree node with mid as root (THIS IS A)
-//Recursively do this:
-//calculate mid of left subarray make it root of left subtree of A
-//calculate mid of right subarray make it root of right subtree of A
+console.log(newTree.findHeight(newTree.find(8)));
+console.log(newTree.findDepth(newTree.find(9)));
+console.log(newTree.isBalanced());
