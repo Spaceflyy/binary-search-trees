@@ -1,6 +1,14 @@
 import { mergeSort } from "./mergeSort.js";
 
-let arrayToBalance = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const generateArray = () => {
+	let array = [];
+
+	for (let i = 0; i < 20; i++) {
+		let newNumber = Math.floor(Math.random() * 100);
+		array.push(newNumber);
+	}
+	return array;
+};
 
 const prepArray = (array) => {
 	return mergeSort(
@@ -41,6 +49,7 @@ const tree = () => {
 		root.left = buildTree(treeArray, start, mid - 1);
 		root.right = buildTree(treeArray, mid + 1, end);
 		rootNode = root;
+
 		return root;
 	};
 
@@ -239,10 +248,14 @@ const tree = () => {
 		}
 
 		if (difference > 1) {
-			return false;
+			return "The Tree is NOT balanced!";
 		} else {
-			return true;
+			return "The tree is balanced!";
 		}
+	};
+
+	const rebalance = () => {
+		buildTree(inOrder());
 	};
 
 	return {
@@ -258,24 +271,44 @@ const tree = () => {
 		findHeight,
 		findDepth,
 		isBalanced,
+		rebalance,
 	};
 };
 
 let newTree = tree();
 
-newTree.buildTree(prepArray(arrayToBalance));
-newTree.insert(0);
-newTree.insert(200);
-newTree.insert(1000);
-newTree.insert(2000);
-newTree.insert(3000);
+newTree.buildTree(prepArray(generateArray()));
 prettyPrint(newTree.getTree());
-
-console.log(newTree.find(2));
-console.log(newTree.levelOrder());
-console.log(newTree.inOrder());
-console.log(newTree.preOrder());
-console.log(newTree.postOrder());
-console.log(newTree.findHeight(newTree.find(8)));
-console.log(newTree.findDepth(newTree.find(9)));
 console.log(newTree.isBalanced());
+console.log("Level Order");
+console.log("-----------------------------------");
+console.log(newTree.levelOrder());
+console.log("Pre Order");
+console.log("-----------------------------------");
+console.log(newTree.preOrder());
+console.log("Post Order");
+console.log("-----------------------------------");
+console.log(newTree.postOrder());
+console.log("In Order");
+console.log("-----------------------------------");
+console.log(newTree.inOrder());
+newTree.insert(101);
+newTree.insert(200);
+newTree.insert(300);
+prettyPrint(newTree.getTree());
+console.log(newTree.isBalanced());
+newTree.rebalance();
+prettyPrint(newTree.getTree());
+console.log(newTree.isBalanced());
+console.log("Level Order");
+console.log("-----------------------------------");
+console.log(newTree.levelOrder());
+console.log("Pre Order");
+console.log("-----------------------------------");
+console.log(newTree.preOrder());
+console.log("Post Order");
+console.log("-----------------------------------");
+console.log(newTree.postOrder());
+console.log("In Order");
+console.log("-----------------------------------");
+console.log(newTree.inOrder());
